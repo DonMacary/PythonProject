@@ -27,7 +27,10 @@ Description: This tool will gather packets coming in on an interface and display
 
 Main():
 
-    This function will create a raw socekt accepting all protocol types. It will bind that socket to an interface of the users choosing. It will also create and print a display table heading. The main function will call the report function.
+    This function will create a raw socekt accepting all protocol types. 
+    It will bind that socket to an interface of the users choosing. 
+    It will also create and print a display table heading. 
+    The main function will call the report function.
 
 Report():
 
@@ -43,7 +46,8 @@ Report():
 
 Enumerate Packet():
 
-    This function will enumerate more details about specific packets. It will look further into the protocol specific information.
+    This function will enumerate more details about specific packets. 
+    It will look further into the protocol specific information.
 
 Search():
 
@@ -53,11 +57,14 @@ Search():
 ## Projected timeline
 28 September:
     
-    Agree on project requirements, Create/Finish outline talk through design. Create GIT project. Seek instructor approval for project. 
+    Agree on project requirements, Create/Finish outline talk through design. 
+    Create GIT project. Seek instructor approval for project. 
 
 1 October:
 
-    Create main method and the base functionality of report. As a full team get packets to come in so that we can split into small teams to work on further advances. 
+    Create main method and the base functionality of report. 
+    As a full team get packets to come in so that we can split into 
+    small teams to work on further advances. 
 
 2 October:
 
@@ -68,5 +75,7 @@ Search():
 
 5 October:
 
-    Reconvene as a group and implement all functionality. Fix bugs incorporated with joining different code. (EEK) 4 hours enough time? 
+    Reconvene as a group and implement all functionality. 
+    Fix bugs incorporated with joining different code.
+    (EEK) 4 hours enough time? 
     Present results to instructors. 
