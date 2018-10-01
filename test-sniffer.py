@@ -41,7 +41,7 @@ def ip_header(data):
     ip_identification = storeobj[3]
     ip_fragment_offset = storeobj[4]
     ip_ttl = storeobj[5]
-    ip_protocol = storeobj[6]
+    ip_protocol = socket.getservbyport(storeobj[6])
     ip_header_checksum = storeobj[7]
     ip_source_address = socket.inet_ntoa(storeobj[8])
     ip_destination_address = socket.inet_ntoa(storeobj[9])
@@ -96,16 +96,23 @@ def udp_header(self, data):
             "CheckSum": udp_checksum}
     return data
 
+def print_column_titles():
+    file_log.write("\n\n[+[ ----------------------- Macary Madness --------------------------[+]\n{} | {} | {} | {} | {} | {} | {} |".format(" No.", 
+    "Time", "Source IP", "Destination IP", "Protocol", "Length", "Information"))
+
+
 #create an INET, raw socket
 s = socket.socket(socket.PF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0800))
- 
+
+line_num = 1
+
 # receive a packet
 while True:
     # print output on terminal
     pkt=s.recvfrom(65565)
     file_log = open("packets.log", "a")
     current_date = str(datetime.datetime.now())
-    file_log.write(current_date) 
+    file_log.write("\n{}".format(current_date)) 
     file_log.write(" ----------")
 
 
@@ -113,6 +120,21 @@ while True:
     print "\n\n[+] ------------ IP Header ------------[+]"
     for i in ip_header(pkt[0][14:34]).iteritems():
         a, b = i
-        file_log.write("{} : {} |".format(a, b))
-        print "{} : {} | ".format(a, b)
+
+        if line_num % 30 == 0:
+            print_column_titles()
+            print "\n\n[+[ ----------------------- Macary Madness --------------------------[+]"
+            print "{} | {} | {} | {} | {} | {} | {} |".format(" No.", 
+            "Time", "Source IP", "Destination IP", "Protocol", "Length", "Information")
+
+        if a == "Version":
+            continue
+        elif a == "Identfication":
+            continue
+        else:
+            file_log.write(" {:15} |".format(b)),
+            print "{} : {} | ".format(a, b)
+        
+    line_num += 1
+
     file_log.close()
