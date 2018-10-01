@@ -48,11 +48,13 @@ def printTables():
 # set a variable to keep the menu running
 runMenu = True
 while (runMenu == True):
+    print("{:_^20}").format("")
     print("1. Listen")
     print("2. Archive Search")
     print("3. Enumerate")
     print("4. Print Table from File")
     print("5. Quit")
+    print("{:_^20}").format("")
     userInput = check_int()
     if (userInput == 1):
         test_sniffer.listening()
@@ -63,5 +65,11 @@ while (runMenu == True):
     elif (userInput == 4):
         printTables()
     elif (userInput == 5):
+        print("{:_^20}").format("")
         print("Have a good day!\n")
+        print("{:_^20}").format("")
         runMenu = False
+    else:
+        print("{:_^20}").format("")
+        print("That was not a valid option.")
+        print("{:_^20}").format("")
