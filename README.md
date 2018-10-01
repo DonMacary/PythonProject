@@ -25,10 +25,13 @@ Description: This tool will gather packets coming in on an interface and display
 
 ## Major Functions:
 
-Main():
+Main Menu():
 
-    This function will create a raw socekt accepting all protocol types. 
-    It will bind that socket to an interface of the users choosing. 
+
+Listen():
+
+    This function will ask the user which interface they would like to listen on.
+    It will then create a raw socket accepting all protocol types on that interface. 
     It will also create and print a display table heading. 
     The main function will call the report function.
 
@@ -41,13 +44,23 @@ Report():
         Destination IP
         Protocol
         Length (in Bytes)
-        Packet Information
+        Packet Information (Source and Dest Port, Flags, Data)
     Additionally, all of the packets will be exported to a file for future enumeration. 
 
-Enumerate Packet():
+EnumeratePacket():
 
-    This function will enumerate more details about specific packets. 
-    It will look further into the protocol specific information.
+    This function will ask the user which packets they would like to enumerate (by packet no.)
+    It will allow them to enumerate by: 
+        Single packet EG: No. 5
+        Range of packets EG: No. 5-10
+        Several non-sequential packets EG: 5,8,2,13-16 
+    Then the function will print out all the information for the packets specified. 
+    NOTE: This function will enumerate from the list that is running in memory. IF the user wants to 
+    print from an archive file they will need to enumerate from file.
+
+EnumerateFromFile():
+
+    This function will mirror the functionality of EnumeratePacket but will pull the data from a log file.
 
 Search():
 
@@ -79,3 +92,33 @@ Search():
     Fix bugs incorporated with joining different code.
     (EEK) 4 hours enough time? 
     Present results to instructors. 
+
+
+## Daily Log
+1 October:
+
+    Sniffer is able to grab all packets and print them, created classes for each packet type.
+    Split into teams to create functionality:
+        Team 1: Kraiser and Smith -> Formatting output into table.
+        Team 2: Grahm -> Export Functionality
+        Team 3: Verring -> creating main menu (DONE)
+        Team 4: Macary -> Print available interfaces to listen on. 
+                -> found psutil library to help with this Verring now helping to add this to listen
+            
+    
+
+
+
+
+## SET UP INSTRUCTIONS
+
+    The programm requires the psutil library. To install follow the instructions at
+    https://github.com/giampaolo/psutil/blob/master/INSTALL.rst
+
+    For the lazy:
+        Windows -> pip install psutil
+        fedora -> sudo yum install gcc python-devel python-pip
+                  pip install psutil 
+
+
+    
