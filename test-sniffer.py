@@ -98,21 +98,23 @@ def udp_header(self, data):
 
 #create an INET, raw socket
 s = socket.socket(socket.PF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0800))
- 
-# receive a packet
-while True:
-    # print output on terminal
-    pkt=s.recvfrom(65565)
-    file_log = open("packets.log", "a")
-    current_date = str(datetime.datetime.now())
-    file_log.write(current_date) 
-    file_log.write(" ----------")
+
+def listening(): 
+    # receive a packet
+    while True:
+        # print output on terminal
+        pkt=s.recvfrom(65565)
+        file_log = open("packets.log", "a")
+        current_date = str(datetime.datetime.now())
+        file_log.write(current_date) 
+        file_log.write(" ----------")
 
 
-    
-    print "\n\n[+] ------------ IP Header ------------[+]"
-    for i in ip_header(pkt[0][14:34]).iteritems():
-        a, b = i
-        file_log.write("{} : {} |".format(a, b))
-        print "{} : {} | ".format(a, b)
-    file_log.close()
+        
+        print "\n\n[+] ------------ IP Header ------------[+]"
+        for i in ip_header(pkt[0][14:34]).iteritems():
+            a, b = i
+            file_log.write("{} : {} |".format(a, b))
+            print "{} : {} | ".format(a, b)
+        file_log.close()
+
