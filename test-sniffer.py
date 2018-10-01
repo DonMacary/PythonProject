@@ -10,12 +10,14 @@ import os
 import datetime
 
 # Ethernet Header
+# Return a dictionary of all elements within an Ethernet Header
 def eth_header(data):
     storeobj = data
     storeobj = struct.unpack("!6s6sH", storeobj)
     destination_mac = binascii.hexlify(storeobj[0])
     source_mac = binascii.hexlify(storeobj[1])
-    eth_protocol = storeobj[2]
+    eth_protocol = hex(storeobj[2])
+    # Outputs the mac addresses as standard Hex output with : notation
     destination_mac = ":".join([destination_mac[i:i + 2] 
         for i in range(0, len(destination_mac), 2)])
     source_mac = ":".join([source_mac[i:i + 2] 
@@ -26,6 +28,7 @@ def eth_header(data):
     return data
 
 # ICMP Header
+# Return a dictionary of all elements within an ICMP Header
 def icmp_header(data):
     icmph = struct.unpack('!BBH', data)
     icmp_type = icmph[0]
@@ -37,6 +40,7 @@ def icmp_header(data):
     return data
 
 # IP Header
+# Return a dictionary of all elements within an IP Header
 def ip_header(data):
     storeobj = struct.unpack("!BBHHHBBH4s4s", data)
     ip_version = storeobj[0]
@@ -62,6 +66,7 @@ def ip_header(data):
     return data
 
 # TCP Header
+# Return a dictionary of all elements within an TCP Header
 def tcp_header(data):
     storeobj = struct.unpack('!HHLLBBHHH',data)
     tcp_source_port = storeobj[0]
@@ -77,7 +82,7 @@ def tcp_header(data):
             "Destination Port": tcp_destination_port,
             "Sequence Number": tcp_sequence_number,
             "Acknowledge Number": tcp_acknowledge_number,
-            "Offset &amp; Reserved": tcp_offset_reserved,
+            "Offset & Reserved": tcp_offset_reserved,
             "Tcp Flag": tcp_flag,
             "Window": tcp_window,
             "CheckSum": tcp_checksum,
@@ -85,6 +90,7 @@ def tcp_header(data):
     return data
 
 # UDP Header
+# Return a dictionary of all elements within an UDP Header
 def udp_header(data):
     storeobj = struct.unpack('!HHHH', data)
     udp_source_port = storeobj[0]
@@ -97,9 +103,11 @@ def udp_header(data):
             "CheckSum": udp_checksum}
     return data
 
+# Function that builds the file name to be used for packet information storage
 def buildFileName():
     file_choice = ''
     while True:
+        # User is prompted to either use a prior file or a new logfile
         print("Would you like to write to a new log file(N)"),
         user_input = raw_input("or the last one(L)?:::")
         if user_input.upper() != 'N' and user_input.upper() != 'L':
@@ -109,6 +117,9 @@ def buildFileName():
             break
     full_file_name = ""
     packet_version = 1
+    # If a new file is used, the file name will be based on the date
+    # If a version of the file is detected, then a number is appended
+    # to the end of the file
     if file_choice == 'N':
         file_name = str(datetime.datetime.today().year) + "_"
         file_name += str(datetime.datetime.today().month) + "_"
@@ -122,6 +133,8 @@ def buildFileName():
             packet_version += 1
         file_write = open(full_file_name, "w+")
         file_write.close()
+    # If the last log file is used, then the most current file needs to be 
+    # determined from the list of log files
     if file_choice == 'L':
         year = 0
         month = 0
@@ -146,21 +159,37 @@ def buildFileName():
         full_file_name += "_packet.log"
     return full_file_name
 
-
-def writeToLog(data):
-    # file_log = open("packets.log", "a")
+# Using the built file name, all packet information will be written to it
+def writeToLog(data, logfile):
+    file_log = open(logfile, "a")
     current_date = str(datetime.datetime.now())
-    # file_log.write(current_date) 
-    # file_log.write(" ----------")
+    file_log.write(current_date) 
+    file_log.write(" ----------")
+    next_op = ""
 
-    print "\n\n[+] ------------ Ethernet Header----- [+]"
+    # Each header will be written to the log file
     for header in eth_header(data[0][0:14]).iteritems():
         a, b = header
-        print("{} :{} |").format(a, b)
-    print "\n\n[+] ------------ IP Header ------------[+]"
+        file_log.write(str(b) + " ")
     for i in ip_header(pkt[0][14:34]).iteritems():
         a, b = i
-        print "{} : {} | ".format(a, b)
+        file_log.write(str(b) + " ")
+        if a is "Protocol":
+            next_op = b
+    if next_op == 1:
+        for i in icmp_header(pkt[0][34:38]).iteritems():
+            a, b = i
+            file_log.write(str(b) + " ")
+    elif next_op == 6:
+        for i in tcp_header(pkt[0][34:54]).iteritems():
+            a, b = i
+            print("{} : {} |").format(a, b)
+            file_log.write(str(b) + " ")
+    elif next_op == 17:
+        for i in udp_header(pkt[0][34:42]).iteritems():
+            a, b = i
+            file_log.write(str(b) + " ")
+    file_log.close()
 
 
 #create an INET, raw socket
@@ -171,4 +200,4 @@ logfile = buildFileName()
 while True:
     # print output on terminal
     pkt = s.recvfrom(65565)
-    writeToLog(pkt)
+    writeToLog(pkt, logfile)
