@@ -183,7 +183,6 @@ def writeToLog(data, logfile):
     elif next_op == 6:
         for i in tcp_header(pkt[0][34:54]).iteritems():
             a, b = i
-            print("{} : {} |").format(a, b)
             file_log.write(str(b) + " ")
     elif next_op == 17:
         for i in udp_header(pkt[0][34:42]).iteritems():
