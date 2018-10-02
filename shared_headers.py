@@ -6,12 +6,14 @@ import binascii
 import os
 import datetime
 # Ethernet Header
+# Return a dictionary of all elements within an Ethernet Header
 def eth_header(data):
     storeobj = data
     storeobj = struct.unpack("!6s6sH", storeobj)
     destination_mac = binascii.hexlify(storeobj[0])
     source_mac = binascii.hexlify(storeobj[1])
-    eth_protocol = storeobj[2]
+    eth_protocol = hex(storeobj[2])
+    # Outputs the mac addresses as standard Hex output with : notation
     destination_mac = ":".join([destination_mac[i:i + 2] 
         for i in range(0, len(destination_mac), 2)])
     source_mac = ":".join([source_mac[i:i + 2] 
@@ -22,6 +24,7 @@ def eth_header(data):
     return data
 
 # ICMP Header
+# Return a dictionary of all elements within an ICMP Header
 def icmp_header(data):
     icmph = struct.unpack('!BBH', data)
     icmp_type = icmph[0]
@@ -33,6 +36,7 @@ def icmp_header(data):
     return data
 
 # IP Header
+# Return a dictionary of all elements within an IP Header
 def ip_header(data):
     storeobj = struct.unpack("!BBHHHBBH4s4s", data)
     ip_version = storeobj[0]
@@ -58,6 +62,7 @@ def ip_header(data):
     return data
 
 # TCP Header
+# Return a dictionary of all elements within an TCP Header
 def tcp_header(data):
     storeobj = struct.unpack('!HHLLBBHHH',data)
     tcp_source_port = storeobj[0]
@@ -73,7 +78,7 @@ def tcp_header(data):
             "Destination Port": tcp_destination_port,
             "Sequence Number": tcp_sequence_number,
             "Acknowledge Number": tcp_acknowledge_number,
-            "Offset &amp; Reserved": tcp_offset_reserved,
+            "Offset & Reserved": tcp_offset_reserved,
             "Tcp Flag": tcp_flag,
             "Window": tcp_window,
             "CheckSum": tcp_checksum,
@@ -81,6 +86,7 @@ def tcp_header(data):
     return data
 
 # UDP Header
+# Return a dictionary of all elements within an UDP Header
 def udp_header(data):
     storeobj = struct.unpack('!HHHH', data)
     udp_source_port = storeobj[0]

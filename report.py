@@ -3,7 +3,8 @@
 from shared_headers import ip_header
 from ipprotoconvert import *
 import time
-
+#include in test-sniffer
+#display_table(pkt)
 #Global variables
 line_num = 0
 packet_db = []
