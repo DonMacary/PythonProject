@@ -13,7 +13,7 @@ Current functions are:
 5. Quit -- this will exit the program
 """
 
-test_sniffer = __import__("test-sniffer")
+from listener import *
 def check_int():
     #ask for user input and check if it's an integer
     user_input = raw_input("What would you like to do?\n")
@@ -57,7 +57,7 @@ while (runMenu == True):
     print("{:_^20}").format("")
     userInput = check_int()
     if (userInput == 1):
-        test_sniffer.listening()
+        listening()
     elif (userInput == 2):
         searchPackets()
     elif (userInput == 3):
