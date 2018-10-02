@@ -27,6 +27,13 @@ Description: This tool will gather packets coming in on an interface and display
 
 Main Menu():
 
+    The main menu will be the executable portion of the program. It will display a menu
+    for the user to choose from. The main menu will prompt the user to:
+    1. Listen
+    2. Search
+    3. Enumerate
+    4. Print Table from file
+    5. Quit
 
 Listen():
 
@@ -105,9 +112,9 @@ Search():
         Team 4: Macary -> Print available interfaces to listen on. 
                 -> found psutil library to help with this Verring now helping to add this to listen
             
-    
+2 October:
 
-
+    Finished function to print all information to a file. Began search functionality.     
 
 
 ## SET UP INSTRUCTIONS
