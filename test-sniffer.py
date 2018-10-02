@@ -8,14 +8,28 @@ import struct
 import binascii
 import os
 import datetime
-#import psutil
+import psutil
 
 def header_choice():
     #ask for user input and check if it's an integer
+    print("{:_^20}").format("")
     user_input = raw_input("Which header type would you like to listen on?\n")
     try:
         user_input = int(user_input)
         user_input <= 5
+        user_input > 0
+    except ValueError:
+        print ("Please input a valid response.")
+        user_input = check_int()
+    return user_input
+
+def socket_choice(listLength):
+    #ask for user input and check if it's an integer
+    print("{:_^20}").format("")
+    user_input = raw_input("Which socket would you like to listen on?\n")
+    try:
+        user_input = int(user_input)
+        user_input <= listLength
         user_input > 0
     except ValueError:
         print ("Please input a valid response.")
@@ -205,8 +219,25 @@ def writeToLog(data, logfile):
     file_log.close()
 
 def listening():
+    #get network address types
+    netList = psutil.net_if_addrs()
+    #create a list object to assign the network address types to
+    keyList = []
+    #loop through and print out the list of network address types
+    #append the address types to the list
+    for i in range(len(netList)):
+        print("{}: {}").format(i+1, netList.keys()[i])
+        keyList.append(netList.keys()[i])
+    
+    #let user choose which network address type
+    userChoice = socket_choice(len(netList))
+    keyChoice = keyList[userChoice-1]
+    socketBind = keyChoice
+
     #create an INET, raw socket
     s = socket.socket(socket.PF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0800))
+    #bind to the user's selected type
+    s.bind((socketBind, 0x0800))
 
     logfile = buildFileName()
     # receive a packet
