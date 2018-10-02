@@ -8,6 +8,19 @@ import struct
 import binascii
 import os
 import datetime
+import psutil
+
+def header_choice():
+    #ask for user input and check if it's an integer
+    user_input = raw_input("Which header type would you like to listen on?\n")
+    try:
+        user_input = int(user_input)
+        user_input <= 5
+        user_input > 0
+    except ValueError:
+        print ("Please input a valid response.")
+        user_input = check_int()
+    return user_input
 
 # Ethernet Header
 # Return a dictionary of all elements within an Ethernet Header
@@ -159,6 +172,7 @@ def buildFileName():
         full_file_name += "_packet.log"
     return full_file_name
 
+
 # Using the built file name, all packet information will be written to it
 def writeToLog(data, logfile):
     file_log = open(logfile, "a")
@@ -190,13 +204,13 @@ def writeToLog(data, logfile):
             file_log.write(str(b) + " ")
     file_log.close()
 
+def listening():
+    #create an INET, raw socket
+    s = socket.socket(socket.PF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0800))
 
-#create an INET, raw socket
-s = socket.socket(socket.PF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0800))
-
-logfile = buildFileName()
-# receive a packet
-while True:
-    # print output on terminal
-    pkt = s.recvfrom(65565)
-    writeToLog(pkt, logfile)
+    logfile = buildFileName()
+    # receive a packet
+    while True:
+        # print output on terminal
+        pkt = s.recvfrom(65565)
+        writeToLog(pkt, logfile)
