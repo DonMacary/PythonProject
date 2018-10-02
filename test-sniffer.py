@@ -8,7 +8,7 @@ import struct
 import binascii
 import os
 import datetime
-import psutil
+#import psutil
 
 def header_choice():
     #ask for user input and check if it's an integer
@@ -185,21 +185,21 @@ def writeToLog(data, logfile):
     for header in eth_header(data[0][0:14]).iteritems():
         a, b = header
         file_log.write(str(b) + " ")
-    for i in ip_header(pkt[0][14:34]).iteritems():
+    for i in ip_header(data[0][14:34]).iteritems():
         a, b = i
         file_log.write(str(b) + " ")
         if a is "Protocol":
             next_op = b
     if next_op == 1:
-        for i in icmp_header(pkt[0][34:38]).iteritems():
+        for i in icmp_header(data[0][34:38]).iteritems():
             a, b = i
             file_log.write(str(b) + " ")
     elif next_op == 6:
-        for i in tcp_header(pkt[0][34:54]).iteritems():
+        for i in tcp_header(data[0][34:54]).iteritems():
             a, b = i
             file_log.write(str(b) + " ")
     elif next_op == 17:
-        for i in udp_header(pkt[0][34:42]).iteritems():
+        for i in udp_header(data[0][34:42]).iteritems():
             a, b = i
             file_log.write(str(b) + " ")
     file_log.close()
