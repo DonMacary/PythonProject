@@ -98,6 +98,7 @@ def writeToLog(data, logfile):
         for i in udp_header(data[0][34:42]).iteritems():
             a, b = i
             file_log.write(str(b) + " ")
+    file_log.write("\n")
     file_log.close()
     
 def socket_choice(listLength):
@@ -135,9 +136,11 @@ def listening():
     s.bind((socketBind, 0x0800))
 
     logfile = buildFileName()
+    print(logfile)
     # receive a packet
     enum_db = []
     while True:
+
         try:
             # print output on terminal            
             pkt = s.recvfrom(65565)
