@@ -136,14 +136,14 @@ def listening():
 
     logfile = buildFileName()
     # receive a packet
-    enum_db = []
+    raw_packet_db = []
     while True:
         try:
             # print output on terminal            
             pkt = s.recvfrom(65565)
-            enum_db.append(pkt)
+            raw_packet_db.append(pkt)
             writeToLog(pkt, logfile)
             display_table(pkt)
         except KeyboardInterrupt:
             break
-    return enum_db
+    return raw_packet_db

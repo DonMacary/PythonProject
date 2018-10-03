@@ -98,3 +98,13 @@ def udp_header(data):
             "Length": udp_length,
             "CheckSum": udp_checksum}
     return data
+
+def check_int():
+    #ask for user input and check if it's an integer
+    user_input = raw_input("What would you like to do?\n")
+    try:
+        user_input = int(user_input)
+    except ValueError:
+        print ("Please input a valid response.")
+        user_input = check_int()
+    return user_input
