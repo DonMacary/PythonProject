@@ -10,7 +10,7 @@ import os
 import datetime
 from shared_headers import *
 from report import *
-#import psutil
+import psutil
 
 # Function that builds the file name to be used for packet information storage
 def buildFileName():
@@ -99,15 +99,51 @@ def writeToLog(data, logfile):
             a, b = i
             file_log.write(str(b) + " ")
     file_log.close()
+    
+def socket_choice(listLength):
+    #ask for user input and check if it's an integer
+    print("{:_^20}").format("")
+    user_input = raw_input("Which socket would you like to listen on?\n")
+    try:
+        user_input = int(user_input)
+        user_input <= listLength
+        user_input > 0
+    except ValueError:
+        print ("Please input a valid response.")
+        user_input = check_int()
+    return user_input
 
 def listening():
+    #get network address types
+    netList = psutil.net_if_addrs()
+    #create a list object to assign the network address types to
+    keyList = []
+    #loop through and print out the list of network address types
+    #append the address types to the list
+    for i in range(len(netList)):
+        print("{}: {}").format(i+1, netList.keys()[i])
+        keyList.append(netList.keys()[i])
+    
+    #let user choose which network address type
+    userChoice = socket_choice(len(netList))
+    keyChoice = keyList[userChoice-1]
+    socketBind = keyChoice
+
     #create an INET, raw socket
     s = socket.socket(socket.PF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0800))
+    #bind to the user's selected type
+    s.bind((socketBind, 0x0800))
 
     logfile = buildFileName()
     # receive a packet
+    enum_db = []
     while True:
-        # print output on terminal
-        pkt = s.recvfrom(65565)
-        writeToLog(pkt, logfile)
-        display_table(pkt)
+        try:
+            # print output on terminal            
+            pkt = s.recvfrom(65565)
+            enum_db.append(pkt)
+            writeToLog(pkt, logfile)
+            display_table(pkt)
+        except KeyboardInterrupt:
+            break
+    return enum_db
