@@ -98,6 +98,7 @@ def writeToLog(data, logfile):
         for i in udp_header(data[0][34:42]).iteritems():
             a, b = i
             file_log.write(str(b) + " ")
+    file_log.write("\n")
     file_log.close()
 
 def listening():
@@ -105,6 +106,7 @@ def listening():
     s = socket.socket(socket.PF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0800))
 
     logfile = buildFileName()
+    print(logfile)
     # receive a packet
     while True:
         # print output on terminal
