@@ -13,7 +13,8 @@ Current functions are:
 5. Quit -- this will exit the program
 """
 
-test_sniffer = __import__("test-sniffer")
+from listener import *
+from print_table import *
 def check_int():
     #ask for user input and check if it's an integer
     user_input = raw_input("What would you like to do?\n")
@@ -37,12 +38,12 @@ def enumeratePacket():
     print("This will give more details about a packet!")
     print("Actual functionality will go here later!")
 
-def printTables():
+#def printTables():
     # the print table from file functionality will go here
     # in the meantime here's a placeholder
-    print("Congratulations! You have choosen to print tables!")
-    print("This will print a table with details about packets!")
-    print("Actual functionality will go here later!")
+    #print("Congratulations! You have choosen to print tables!")
+    #print("This will print a table with details about packets!")
+    #print("Actual functionality will go here later!")
 
 # main menu
 # set a variable to keep the menu running
@@ -57,13 +58,13 @@ while (runMenu == True):
     print("{:_^20}").format("")
     userInput = check_int()
     if (userInput == 1):
-        test_sniffer.listening()
+        listening()
     elif (userInput == 2):
         searchPackets()
     elif (userInput == 3):
         enumeratePacket()
     elif (userInput == 4):
-        printTables()
+        displayTable()
     elif (userInput == 5):
         print("{:_^20}").format("")
         print("Have a good day!\n")
