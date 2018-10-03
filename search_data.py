@@ -164,7 +164,8 @@ def search_file(filename):
             packet_db.append(packet)
             line_num += 1
     # Here, the available packets from the file are printed
-    print " {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ".format(" No.",
+    print("Pulled From File: {}").format(filename)
+    print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(" No.",
             "Time", "Source IP", "Destination IP", "Protocol", "Length", 
             "Information")
     for packet in packet_db:
