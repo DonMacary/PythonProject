@@ -82,7 +82,7 @@ def build_search_statement():
     return search_operations
 
 # The search operation is performed on the provided list
-def search_list(packet_db):
+def search_list(parsed_packet_db):
     filter_list = []
     field = 0
     value = 0
@@ -99,7 +99,7 @@ def search_list(packet_db):
     matches = False
     prev_match = False
     # Each packet from the list is looked at
-    for item in packet_db:
+    for item in parsed_packet_db:
         # Each search condition is compared against
         for search in search_op:
             field = search[0]
@@ -147,7 +147,7 @@ def search_list(packet_db):
 
 # This function will search a provided file name and return a filtered list
 def search_file(filename):
-    packet_db = []
+    parsed_packet_db = []
     line_num = 1
     # The file is opened and stored into a list of ordered dictionaries
     with open(filename, "r") as file_read:
@@ -161,7 +161,7 @@ def search_file(filename):
             packet["Protocol"] = line_split[8]
             packet["Total Length"] = line_split[6]
             packet["Header Checksum"] = line_split[13]
-            packet_db.append(packet)
+            parsed_packet_db.append(packet)
             line_num += 1
     # Here, the available packets from the file are printed
     print("Pulled From File: {}").format(filename)
@@ -174,5 +174,5 @@ def search_file(filename):
                 packet["Destination Address"], protoName(int(packet["Protocol"])), 
                 packet["Total Length"], packet["Header Checksum"])
     # Here, the search operations are called on the built packet list
-    output = search_list(packet_db)
+    output = search_list(parsed_packet_db)
     return output
