@@ -12,20 +12,7 @@ from shared_headers import *
 from report import *
 import psutil
 
-
-def socket_choice(listLength):
-    #ask for user input and check if it's an integer
-    print("{:_^20}").format("")
-    user_input = raw_input("Which socket would you like to listen on?\n")
-    try:
-        user_input = int(user_input)
-        user_input <= listLength
-        user_input > 0
-    except ValueError:
-        print ("Please input a valid response.")
-        user_input = check_int()
-    return user_input
-    
+   
 # Function that builds the file name to be used for packet information storage
 def buildFileName():
     file_choice = ''
@@ -116,7 +103,7 @@ def writeToLog(data, logfile):
     file_log.close()
     
 def socket_choice(listLength):
-    #ask for user input and check if it's an integer
+    """ask for user input on which socket they want to listen on and check if it's an integer"""
     print("{:_^20}").format("")
     user_input = raw_input("Which socket would you like to listen on?\n")
     try:
@@ -129,6 +116,8 @@ def socket_choice(listLength):
     return user_input
 
 def listening():
+    """starts listening on ports and displays data to terminal as well as logging
+    it in a file"""
     #get network address types
     netList = psutil.net_if_addrs()
     #create a list object to assign the network address types to

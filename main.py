@@ -51,14 +51,17 @@ while (runMenu == True):
     print("{:_^20}").format("")
     userInput = check_int()
     if (userInput == 1):
+        #Calls the listening function that starts listening and logging what it catches on ports
         listening()
     elif (userInput == 2):
         searchPackets()
     elif (userInput == 3):
         enumeratePacket()
     elif (userInput == 4):
+        #Calls the display table function that displays info from a file onto the terminal
         displayTable()
     elif (userInput == 5):
+        #Tells the user goodbye
         print("{:_^20}").format("")
         print("Have a good day!\n")
         print("{:_^20}").format("")
