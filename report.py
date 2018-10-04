@@ -6,7 +6,7 @@ import collections
 import time
 
 def display_table(data, parsed_packet_db, line_num):
-    if line_num % 50 == 0:
+    if line_num % 50 == 0 or line_num == 1:
         print("\n\n  [+] ------------------------------- Macary Madness"),
         print("------------------------------ [+]")
         print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(" No.", 

@@ -176,3 +176,42 @@ def search_file(filename):
     # Here, the search operations are called on the built packet list
     output = search_list(parsed_packet_db)
     return output
+
+def search_packets(parsed_packet_db):
+    print("Would you like to search on packets in memory(1)"),
+    print("or search on packets in a file(2)?")
+    user_choice = user_validation(2)
+    filtered_list = []
+    if user_choice == 1:
+        filtered_list = search_list(parsed_packet_db)
+    else:
+        while True:
+            print("What file would you pull packet from?")
+            file_name = raw_input(":::")
+            try:
+                file_test = open(file_name, 'rb')
+                file_test.close()
+            except IOError:
+                print("Could not read from file name provided.")
+                print("Would you like to try again?(Y or N)")
+                while True:
+                    user_choice = raw_input(":::")
+                    if user_choice.upper() != 'Y' and user_choice.upper() != 'N':
+                        print("Not a valid input. Please input again.")
+                    else:
+                        break
+                if user_choice.upper() == 'N':
+                    break
+                if user_choice.upper() == 'Y':
+                    continue
+            filtered_list = search_file(file_name)
+            break
+    print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(" No.", 
+            "Time", "Source IP", "Destination IP", "Protocol",
+            "Length", "Information")
+    for packet in filtered_list:
+        print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(
+                packet["No."], packet["Time"], packet["Source Address"], 
+                packet["Destination Address"], protoName(int(packet["Protocol"])), 
+                packet["Total Length"], packet["Header Checksum"])
+    print("")

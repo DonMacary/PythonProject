@@ -139,7 +139,7 @@ def listening():
     # receive a packet
     raw_packet_db = []
     parsed_packet_db = []
-    line_num = 0
+    line_num = 1
     while True:
         try:
             # print output on terminal            
@@ -150,4 +150,4 @@ def listening():
             line_num += 1
         except KeyboardInterrupt:
             break
-    return raw_packet_db
+    return raw_packet_db, parsed_packet_db
