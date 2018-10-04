@@ -18,12 +18,15 @@ from enumPacket import *
 from shared_headers import check_int
 from print_table import *
 
+<<<<<<< HEAD
 def searchPackets():
     # the search functionality will go here
     # in the meantime here's a placeholder
     print("Congratulations! You have choosen to search!")
     print("Actual functionality will go here later!")
 
+=======
+>>>>>>> 5fdc6911b962f174d483c814a103db22928fad13
 # main menu
 # set a variable to keep the menu running
 def MacaryMadness():
@@ -47,7 +50,10 @@ def MacaryMadness():
         elif (userInput == 3):
             packetChoice(enum_db)
         elif (userInput == 4):
+<<<<<<< HEAD
             #Calls the display table function that displays info from a file onto the terminal
+=======
+>>>>>>> 5fdc6911b962f174d483c814a103db22928fad13
             displayTable()
         elif (userInput == 5):
             print("{:_^20}").format("")
