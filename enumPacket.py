@@ -1,6 +1,5 @@
 #Function will take in a packet and print the data
 from shared_headers import *
-from main import MacaryMadness
 
 def onePacket():
     #ask for user input and check if it's an integer
@@ -35,17 +34,28 @@ def rangeEnd():
     return int(packEnd)
 
 #Allows for combination of single packet and range of packet selection
-def multiplePackets():
+def packetCombo():
     print "\nReady for packet selection"
+    print "Separate packet number by comma (1, 2) and range by dashes (4-6)"
     user_input = raw_input("Enter packet number and/or packet number range: ").rstrip()
     try:
-        packRange = user_input.split(" `-=\][';/.,~!@#$%^&*()_+|}{:?><")
+        packRange = user_input.split(",")
+        j = []
         for i in range(len(packRange)):
-            packRange[i] = int(packRange[i])
+            try:
+                packRange[i] = int(packRange[i])
+                j.append(packRange[i])
+                print j
+            except:                
+                temp = packRange[i].split("-")
+                print temp
+                for num in range(int(temp[0]), (int(temp[1])+1), 1):
+                    j.append(num)
+                print j                  
     except ValueError:
         print ("Please input a valid response.")
-        user_input = multiplePackets()
-    return packRange
+        user_input = packetCombo()
+    return j
 
 def enumeratePacket(data):
     temp_db = []
@@ -131,14 +141,17 @@ def packetChoice(data):
             packet_num = pkStart
             pkEnd = rangeEnd()
             for i in range(pkStart, pkEnd + 1):
-                print "\nPacket  {}".format(packet_num)
+                print "\nPacket {}".format(packet_num)
                 enumeratePacket(data[i])
                 packet_num += 1
         elif (userInput == 3):
-            enumeratePacket(data[i])
+            #combo 
+            pkCombo = packetCombo()
+            for i in range(len(pkCombo)):
+                print "\nPacket {}".format(int(pkCombo[i]))
+                enumeratePacket(data[i])
         elif (userInput == 4):
             break
-            MacaryMadness()
         else:
             print("{:_^20}").format("")
             print("That was not a valid option.")
