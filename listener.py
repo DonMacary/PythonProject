@@ -29,7 +29,7 @@ def buildFileName():
     # If a new file is used, the file name will be based on the date
     # If a version of the file is detected, then a number is appended
     # to the end of the file
-    if file_choice == 'N':
+    if file_choice.upper() == 'N':
         file_name = str(datetime.datetime.today().year) + "_"
         file_name += str(datetime.datetime.today().month) + "_"
         file_name += str(datetime.datetime.today().day)
@@ -44,7 +44,7 @@ def buildFileName():
         file_write.close()
     # If the last log file is used, then the most current file needs to be 
     # determined from the list of log files
-    if file_choice == 'L':
+    if file_choice.upper() == 'L':
         year = 0
         month = 0
         day = 0
@@ -138,7 +138,7 @@ def listening():
     logfile = buildFileName()
     # receive a packet
     raw_packet_db = []
-    parsed_packet_db = {}
+    parsed_packet_db = []
     line_num = 0
     while True:
         try:
