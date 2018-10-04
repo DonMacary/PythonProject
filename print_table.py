@@ -6,7 +6,14 @@ from ipprotoconvert import *
 def displayTable():
     """This function lets the user open a packet log and display the data from that log on the terminal"""
     #open file
-    input_file = open(raw_input("Type the file you would like to open.\n"), 'rU')
+    itter = 1
+    while itter == 1:
+       try:
+           #open file
+           input_file = open(raw_input("Type the file you would like to open.\n"), 'rU')
+           itter = 2
+       except:
+           print("Invalid File Name.  Please try again.")
     #print table header
     print "\n\n  [+] ------------------------------- Macary Madness ------------------------------ [+]"
     print " {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ".format(" No.", 
