@@ -16,19 +16,7 @@ Current functions are:
 from listener import *
 from enumPacket import *
 from shared_headers import check_int
-
-def searchPackets():
-    # the search functionality will go here
-    # in the meantime here's a placeholder
-    print("Congratulations! You have choosen to search!")
-    print("Actual functionality will go here later!")
-
-def printTables():
-    # the print table from file functionality will go here
-    # in the meantime here's a placeholder
-    print("Congratulations! You have choosen to print tables!")
-    print("This will print a table with details about packets!")
-    print("Actual functionality will go here later!")
+from print_table import *
 
 # main menu
 # set a variable to keep the menu running
@@ -53,7 +41,7 @@ def MacaryMadness():
         elif (userInput == 3):
             packetChoice(enum_db)
         elif (userInput == 4):
-            printTables()
+            displayTable()
         elif (userInput == 5):
             print("{:_^20}").format("")
             print("Have a good day!\n")
