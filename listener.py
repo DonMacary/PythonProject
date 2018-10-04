@@ -139,6 +139,7 @@ def listening():
     print(logfile)
     # receive a packet
     raw_packet_db = []
+    parsed_packet_db = []
     while True:
 
         try:
@@ -146,7 +147,7 @@ def listening():
             pkt = s.recvfrom(65565)
             raw_packet_db.append(pkt)
             writeToLog(pkt, logfile)
-            display_table(pkt)
+            display_table(pkt, parsed_packet_db)
         except KeyboardInterrupt:
             break
     return raw_packet_db
