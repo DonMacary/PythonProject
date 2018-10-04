@@ -17,6 +17,7 @@ from listener import *
 from enumPacket import *
 from shared_headers import check_int
 from print_table import *
+from search_data import *
 
 # main menu
 # set a variable to keep the menu running
@@ -24,6 +25,7 @@ def MacaryMadness():
 
     runMenu = True
     enum_db = []
+    parsed_packet_db = []
 
     while (runMenu == True):
         print("{:_^20}").format("")
@@ -35,9 +37,9 @@ def MacaryMadness():
         print("{:_^20}").format("")
         userInput = check_int()
         if (userInput == 1):
-            enum_db = listening()
+            enum_db, parsed_packet_db = listening()
         elif (userInput == 2):
-            searchPackets()
+            search_packets(parsed_packet_db)
         elif (userInput == 3):
             if not enum_db:
                 print "\nMust listen before enumeration"
