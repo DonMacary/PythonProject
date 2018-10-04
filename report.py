@@ -6,8 +6,10 @@ import collections
 import time
 
 def display_table(data, parsed_packet_db, line_num):
+    
     if line_num % 50 == 0 or line_num == 1:
-        print("\n\n  [+] ------------------------------- Macary Madness"),
+        print "\n\t\t\t\tPress Ctrl+C to exit listener"
+        print("\n  [+] ------------------------------- Macary Madness"),
         print("------------------------------ [+]")
         print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(" No.", 
             "Time", "Source IP", "Destination IP", "Protocol", "Length", "Information")
