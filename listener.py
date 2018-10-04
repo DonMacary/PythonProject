@@ -98,6 +98,7 @@ def writeToLog(data, logfile):
         for i in udp_header(data[0][34:42]).iteritems():
             a, b = i
             file_log.write(str(b) + " ")
+    file_log.write("\n")
     file_log.close()
     
 def socket_choice(listLength):
@@ -137,13 +138,16 @@ def listening():
     logfile = buildFileName()
     # receive a packet
     raw_packet_db = []
+    parsed_packet_db = {}
+    line_num = 0
     while True:
         try:
             # print output on terminal            
             pkt = s.recvfrom(65565)
             raw_packet_db.append(pkt)
             writeToLog(pkt, logfile)
-            display_table(pkt)
+            display_table(pkt, parsed_packet_db, line_num)
+            line_num += 1
         except KeyboardInterrupt:
             break
     return raw_packet_db
