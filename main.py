@@ -38,13 +38,6 @@ def enumeratePacket():
     print("This will give more details about a packet!")
     print("Actual functionality will go here later!")
 
-#def printTables():
-    # the print table from file functionality will go here
-    # in the meantime here's a placeholder
-    #print("Congratulations! You have choosen to print tables!")
-    #print("This will print a table with details about packets!")
-    #print("Actual functionality will go here later!")
-
 # main menu
 # set a variable to keep the menu running
 runMenu = True
