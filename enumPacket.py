@@ -1,6 +1,5 @@
 #Function will take in a packet and print the data
 from shared_headers import *
-from main import MacaryMadness
 
 def onePacket():
     #ask for user input and check if it's an integer
@@ -138,7 +137,6 @@ def packetChoice(data):
             enumeratePacket(data[i])
         elif (userInput == 4):
             break
-            MacaryMadness()
         else:
             print("{:_^20}").format("")
             print("That was not a valid option.")
