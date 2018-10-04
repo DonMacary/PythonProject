@@ -6,6 +6,7 @@
     and a packet list from a file
 """
 from datetime import datetime
+from ipprotoconvert import *
 import collections
 
 # Menu for search fields to be selected
@@ -81,7 +82,7 @@ def build_search_statement():
     return search_operations
 
 # The search operation is performed on the provided list
-def search_list(packet_db):
+def search_list(parsed_packet_db):
     filter_list = []
     field = 0
     value = 0
@@ -98,7 +99,7 @@ def search_list(packet_db):
     matches = False
     prev_match = False
     # Each packet from the list is looked at
-    for item in packet_db:
+    for item in parsed_packet_db:
         # Each search condition is compared against
         for search in search_op:
             field = search[0]
@@ -144,37 +145,34 @@ def search_list(packet_db):
         matches = False
     return filter_list
 
-# This function will search a provided file name and return a filter list
+# This function will search a provided file name and return a filtered list
 def search_file(filename):
-    packet_db = []
+    parsed_packet_db = []
     line_num = 1
+    # The file is opened and stored into a list of ordered dictionaries
     with open(filename, "r") as file_read:
         for line in file_read:
             packet = collections.OrderedDict() 
             line_split = line.split(" ")
             packet["No."] = line_num
             packet["Time"] = datetime.strptime(line_split[1][0:8], "%H:%M:%S").strftime("%H:%M:%S")
-            packet["Source Address"] = line_split[5]
+            packet["Source Address"] = line_split[13]
             packet["Destination Address"] = line_split[14]
-            packet["Protocol"] = line_split[8]
-            packet["Total Length"] = line_split[6]
-            packet_db.append(packet)
+            packet["Protocol"] = line_split[11]
+            packet["Total Length"] = line_split[7]
+            packet["Header Checksum"] = line_split[12]
+            parsed_packet_db.append(packet)
             line_num += 1
-    print(packet_db)
-# Test Section to see if filter search works on a provide data set
-
-#test_list = []
-#test_element = {"No.": 1, "Time": "test","Source Address":"192.168.31.128","Destination Address":"192.168.31.31","Protocol":6,"Total Length":17}
-#test_list.append(test_element)
-#test_element = {"No.": 2, "Time": "test","Source Address":"192.168.31.129","Destination Address":"192.168.30.29","Protocol":6,"Total Length":23}
-#test_list.append(test_element)
-#test_element = {"No.": 3, "Time": "test","Source Address":"192.168.31.130","Destination Address":"192.168.31.31","Protocol":7,"Total Length":17}
-#test_list.append(test_element)
-#test_element = {"No.": 4, "Time": "test","Source Address":"192.168.31.131","Destination Address":"192.168.30.31","Protocol":6,"Total Length":17}
-#test_list.append(test_element)
-#test_element = {"No.": 5, "Time": "test","Source Address":"192.168.31.132","Destination Address":"192.168.30.28","Protocol":9,"Total Length":17}
-#test_list.append(test_element)
-#print(test_list)
-#output = []
-#output = search_list(test_list)
-#print(output)
+    # Here, the available packets from the file are printed
+    print("Pulled From File: {}").format(filename)
+    print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(" No.",
+            "Time", "Source IP", "Destination IP", "Protocol", "Length", 
+            "Information")
+    for packet in parsed_packet_db:
+        print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(
+                packet["No."], packet["Time"], packet["Source Address"], 
+                packet["Destination Address"], protoName(int(packet["Protocol"])), 
+                packet["Total Length"], packet["Header Checksum"])
+    # Here, the search operations are called on the built packet list
+    output = search_list(parsed_packet_db)
+    return output
