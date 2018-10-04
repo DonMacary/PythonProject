@@ -301,4 +301,4 @@ gmock-1.7.0\
 *.vcxproj
 *.vcxproj.filters
 *.pyc
-
+*.swp
