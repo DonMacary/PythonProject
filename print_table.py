@@ -16,11 +16,11 @@ def displayTable():
     #loop through and display data read from file
     for y in range(len(data)):
         sourceData = data[y].split(' ')
-        sourceIP = sourceData[5]
+        sourceIP = sourceData[13]
         destIP = sourceData[14]
-        protocol = protoName(int(sourceData[8]))
-        length = sourceData[6]
-        info = sourceData[13]
+        protocol = protoName(int(sourceData[11]))
+        length = sourceData[7]
+        info = sourceData[12]
 
         print (" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format((y+1), (data[y][11:19]),sourceIP,
         destIP, protocol, length, info)
