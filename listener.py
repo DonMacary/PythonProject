@@ -114,14 +114,6 @@ def socket_choice(listLength):
         user_input = check_int()
     return user_input
 
-def build_line_num(parsed_packet_db):
-    line_num = 0
-    if len(parsed_packet_db) > 0:
-        for item in parsed_packet_db:
-            if item["No."] > line_num:
-                line_num = item["No."]
-    return line_num + 1
-
 def listening():
     #get network address types
     netList = psutil.net_if_addrs()
