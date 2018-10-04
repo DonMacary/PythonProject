@@ -41,7 +41,10 @@ def MacaryMadness():
         elif (userInput == 2):
             search_packets(parsed_packet_db)
         elif (userInput == 3):
-            packetChoice(enum_db)
+            if not enum_db:
+                print "\nMust listen before enumeration"
+            else:
+                packetChoice(enum_db)
         elif (userInput == 4):
             displayTable()
         elif (userInput == 5):
