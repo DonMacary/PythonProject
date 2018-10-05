@@ -1,5 +1,6 @@
 #Function will take in a packet and print the data
 from shared_headers import *
+import time
 
 #Allows for combination of single packet and range of packet selection
 def packetCombo():
@@ -13,13 +14,10 @@ def packetCombo():
             try:
                 packRange[i] = int(packRange[i])
                 j.append(packRange[i])
-                print j
             except:                
                 temp = packRange[i].split("-")
-                print temp
                 for num in range(int(temp[0]), (int(temp[1])+1), 1):
-                    j.append(num)
-                print j                  
+                    j.append(num)                
     except ValueError:
         print ("Please input a valid response.")
         user_input = packetCombo()
@@ -99,9 +97,15 @@ def packetChoice(data):
         if (userInput == 1):
             #Allows for single and packet range selection
             pkCombo = packetCombo()
-            for i in range(len(pkCombo)):
-                print "\nPacket {}".format(int(pkCombo[i]))
-                enumeratePacket(data[i])
+            if pkCombo < 1:
+                print "\nPacket Selection out-of-range"
+                packetChoice(data)
+                break
+            else:                
+                for i in pkCombo:                    
+                    print "\nPacket {}".format(i)
+                    enumeratePacket(data[i -1])
+                    time.sleep(1)
         elif (userInput == 2):
             break
         else:
