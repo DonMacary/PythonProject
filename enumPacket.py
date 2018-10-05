@@ -96,16 +96,28 @@ def packetChoice(data):
         userInput = check_int()
         if (userInput == 1):
             #Allows for single and packet range selection
+            invalid_int = False
             pkCombo = packetCombo()
-            if pkCombo < 1:
-                print "\nPacket Selection out-of-range"
+            #Checking that packet is in range 
+            for item in pkCombo:
+                if item < 0 or item > len(data):
+                    invalid_int = True
+                    break
+            #Making sure pkCombo exists
+            if not pkCombo:
+                print "\nNo packets selected"
                 packetChoice(data)
                 break
-            else:                
+            #Packet selected < 0 or packet > number of packets in database
+            elif invalid_int:
+                print "Packet number out of range."
+                packetChoice(data)
+                break
+            elif pkCombo:
                 for i in pkCombo:                    
                     print "\nPacket {}".format(i)
                     enumeratePacket(data[i -1])
-                    time.sleep(1)
+                    time.sleep(1)                            
         elif (userInput == 2):
             break
         else:
