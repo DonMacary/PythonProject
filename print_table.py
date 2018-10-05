@@ -12,8 +12,10 @@ def displayTable():
             input_file = open(raw_input("Type the file you would like to open.\n"), 'rU')
             itter = 2
         except KeyboardInterrupt:
+            #If the user uses a keyboard interrupt, break out of the loop
             break
         except:
+            #If the user inputs a filename that doesn't exist, let them know the filename was invalid
             print("Invalid File Name.  Please try again.")
     if (itter == 2):
         #print table header
