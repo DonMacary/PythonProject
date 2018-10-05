@@ -38,6 +38,17 @@ Authors:
 * allow user to filter packets on the exported results file. 
 * be portable for all OS versions. 
 
+## SET UP AND RUN INSTRUCTIONS
+
+    The programm requires the psutil library. To install follow the instructions at
+    https://github.com/giampaolo/psutil/blob/master/INSTALL.rst
+
+    For the lazy:
+        Windows -> pip install psutil
+        fedora -> sudo yum install gcc python-devel python-pip
+                  sudo pip install psutil 
+    To run the program type:
+        sudo python2 __main__.py 
 
 ## Projected timeline
 28 September:
@@ -152,19 +163,6 @@ Authors:
     Started cleaning up code and adding last minute features
     Info column being worked on to display more information (such as SP DP flags etc...)
 
-
-
-## SET UP AND RUN INSTRUCTIONS
-
-    The programm requires the psutil library. To install follow the instructions at
-    https://github.com/giampaolo/psutil/blob/master/INSTALL.rst
-
-    For the lazy:
-        Windows -> pip install psutil
-        fedora -> sudo yum install gcc python-devel python-pip
-                  sudo pip install psutil 
-    To run the program type:
-        sudo python2 __main__.py 
 
 ## Project Problems:
 **Requirements**
