@@ -38,6 +38,17 @@ Authors:
 * allow user to filter packets on the exported results file. 
 * be portable for all OS versions. 
 
+## SET UP AND RUN INSTRUCTIONS
+
+    The programm requires the psutil library. To install follow the instructions at
+    https://github.com/giampaolo/psutil/blob/master/INSTALL.rst
+
+    For the lazy:
+        Windows -> pip install psutil
+        fedora -> sudo yum install gcc python-devel python-pip
+                  sudo pip install psutil 
+    To run the program type:
+        sudo python2 __main__.py 
 
 ## Projected timeline
 28 September:
@@ -99,6 +110,14 @@ Authors:
 * Further breaks down data into smaller lists in order to format and display correct data
 * After the function completes displaying all the fields in the log file, it closes the file.
 
+### **enumPacket.py**
+* Asks the user if they would like to enumerate packets or return to the previous menu
+    * If the user chooses previous menu they will return back to the main menus
+* Prompts the user to choose packets they would like to get further details about
+    * Users can put in a single int, multiple ints, and a range of int
+    * pktCombo function separates user input and creates a list of all packet numbers to enumerate
+* Prints out detailed header information about each packet the user listed
+
  ### **search_data.py**
 * Executes the search option on either a provided list of packets or a prompted filename.  
 * User will then be prompted for search conditions (Fields will be picked, values will be selected, either MATCH, CONTAINS, or NOT will be selected, and lastly, any new conditions will be either ANDed or ORed).  
@@ -152,19 +171,6 @@ Authors:
     Started cleaning up code and adding last minute features
     Info column being worked on to display more information (such as SP DP flags etc...)
 
-
-
-## SET UP AND RUN INSTRUCTIONS
-
-    The programm requires the psutil library. To install follow the instructions at
-    https://github.com/giampaolo/psutil/blob/master/INSTALL.rst
-
-    For the lazy:
-        Windows -> pip install psutil
-        fedora -> sudo yum install gcc python-devel python-pip
-                  sudo pip install psutil 
-    To run the program type:
-        sudo python2 __main__.py 
 
 ## Project Problems:
 **Requirements**
