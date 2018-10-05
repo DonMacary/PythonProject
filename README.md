@@ -4,7 +4,7 @@ Authors:
     1Lt Donald Macary - Project Manager
     2dLt Ricky Smith - Developer
     SSgt Robert Graham - Developer
-    SSgt Will Kraiser - Developer
+    SSgt Will Kreiser - Developer
     SSgt Zack Vering - Developer
 
 ## Project Description:
