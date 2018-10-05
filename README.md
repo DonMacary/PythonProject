@@ -19,7 +19,7 @@ Authors:
 # Packet Sniffer
 
 **Description:** This tool is a command line tool written in python that allows a user to display and analyse packet data on any/all interfaces on their system. Currently this tool is compatible with LINUX operating systems and runs through python 2.7. Users will need to follow the setup and run instructions in order to run the program.
-
+The github for this project is located at [HERE](https://github.com/DonMacary/PythonProject)
 
 ## Project Requirements
 **This tool WILL:**
@@ -85,7 +85,7 @@ Authors:
 
 ## Files:
 
-### **__main__.py**
+### [**__main__.py**](./__main__.py)
 * Central executable for program - this file is called to start program. 
 * Displays the main menu and makes calls to different functions based on user input.
 * Asks the user if they would like to:
@@ -97,20 +97,20 @@ Authors:
 * Calls the functions to accomplish each task.
 * The menu loops until the user chooses to quit the program or an error occurs. 
 
-### **report.py**
+### [**report.py**](./report.py)
 * Provides the main functionality for displaying the packets table. 
 * Prints the table's column titles every 50 packets/lines.  
 * Takes in an unpacked packet, unpacks it and displays the information in a formatted table.
 * Appends a line number and timestamp to all packets.
 * Adds unpacked packet to a database for use in other functions in the program.
 
-### **print_table.py**
+### [**print_table.py**](./print_table.py)
 * Prompts the user to provide a path to a log file
 * Reads the file the user provides and parses the data into a list.  
 * Further breaks down data into smaller lists in order to format and display correct data
 * After the function completes displaying all the fields in the log file, it closes the file.
 
-### **enumPacket.py**
+### [**enumPacket.py**](./enumPacket.py)
 * Asks the user if they would like to enumerate packets or return to the previous menu
     * If the user chooses previous menu they will return back to the main menus
 * Prompts the user to choose packets they would like to get further details about
@@ -118,16 +118,19 @@ Authors:
     * pktCombo function separates user input and creates a list of all packet numbers to enumerate
 * Prints out detailed header information about each packet the user listed
 
- ### **search_data.py**
+ ### [**search_data.py**](./search_data.py)
 * Executes the search option on either a provided list of packets or a prompted filename.  
 * User will then be prompted for search conditions (Fields will be picked, values will be selected, either MATCH, CONTAINS, or NOT will be selected, and lastly, any new conditions will be either ANDed or ORed).  
 * A filtered list of packets will be provided back and displayed.  The function will execute once when called, but can be called as many times as desired by the user.
 * Function that main will call to hook into this set of functions is search_packets(parsed_packet_db). Parsed_packet_db is the list of packets that was gathered from the listener
 
-### **Shared_Headers.py**
+### [**Shared_Headers.py**](shared_header.py)
 * Contains classes for all common header types. This is called in many functions 
+* Provides a dictionary of all protocol types and their integer value.
+* Provides the protoname function to convert protocol ints to protocol keyword strings.
+* Other similar functions do not display the information we wanted in this program. s
 
-### **listener.py**
+### [**listener.py**](./listener.py)
 * Prompts the user to choose an interface to begin listening for packets on.
 * Creates a RAW socket bound to the user-specified interface
     * Note this is one of the two major reasons why this program is not portable. 
@@ -138,10 +141,6 @@ Authors:
     * Third it passes the packet into the display table function to display some packet information to the user
 * Continues running until user hits Ctrl+C then breaks back to main menu
 
-### **ipprotoconvert.py**
-* Provides a dictionary of all protocol types and their integer value.
-* Provides the protoname function to convert protocol ints to protocol keyword strings.
-* Other similar functions do not display the information we wanted in this program. 
 ## Daily Log
 1 October:
 
