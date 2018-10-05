@@ -43,3 +43,32 @@ def protoName(protoNum):
         return protoDict[protoNum]
     else:
         return "Unassigned"
+def tcpFlags(flags):
+    flag_str = ""
+    if flags >= 256:
+        flag_str += "[NS]"
+        flags -= 256
+    if flags >= 128:
+        flag_str += "[CWR]"
+        flags -= 128
+    if flags >= 64:
+        flag_str += "[ECE]"
+        flags -= 64
+    if flags >= 32:
+        flag_str += "[URG]"
+        flags -= 32
+    if flags >= 16:
+        flag_str += "[ACK]"
+        flags -= 16
+    if flags >= 8:
+        flag_str += "[PSH]"
+        flags -= 8
+    if flags >= 4:
+        flag_str += "[SYN]"
+        flags -= 4
+    if flags >= 2:
+        flag_str += "[RST]"
+        flags -= 2
+    if flags >= 1:
+        flag_str += "[FIN]"
+    return flag_str

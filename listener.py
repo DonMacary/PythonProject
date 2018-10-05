@@ -17,14 +17,23 @@ import psutil
 def buildFileName():
     file_choice = ''
     while True:
-        # User is prompted to either use a prior file or a new logfile
-        print("Would you like to write to a new log file(N)"),
-        user_input = raw_input("or the last one(L)?:::")
-        if user_input.upper() != 'N' and user_input.upper() != 'L':
-            print("User input is not valid.  Please choose again.")
-        else:
-            file_choice = user_input
+        log_file = False
+        for item in os.listdir(os.getcwd()):
+            if ".log" in item:
+                log_file = True
+        if log_file is False:
+            print("No previous log file detected.  Creating new logfile")
+            file_choice = 'N'
             break
+        else:
+            # User is prompted to either use a prior file or a new logfile
+            print("Would you like to write to a new log file(N)"),
+            user_input = raw_input("or the last one(L)?:::")
+            if user_input.upper() != 'N' and user_input.upper() != 'L':
+                print("User input is not valid.  Please choose again.")
+            else:
+                file_choice = user_input
+                break
     full_file_name = ""
     packet_version = 1
     # If a new file is used, the file name will be based on the date
@@ -51,11 +60,17 @@ def buildFileName():
         day = 0
         version = 0
         list_of_files = os.listdir(os.getcwd())
+        # This loop will go through all files within the current directory
         for item in list_of_files:
             parts = item.split(".")
+            # Only files that end with *.log will be looked at
             if parts[len(parts) - 1] == 'log':
+                # If the file starts with a year and is greater than the stored
+                # year, store the new year value
                 if int(item.split("_")[0]) > year:
                     year = int(item.split("_")[0])
+                # If the year value matchs the max value held, continue looking
+                # at the month and day
                 if int(item.split("_")[0]) == year:
                     if int(item.split("_")[1]) > month:
                         month = int(item.split("_")[1])
@@ -63,6 +78,11 @@ def buildFileName():
                         if int(item.split("_")[2]) > day:
                             day = int(item.split("_")[2])
                         if int(item.split("_")[2]) == day:
+                            # If the loop has gotten this far, a packet log file
+                            # exists as a most current build
+                            # Since the use wants to have a new log file
+                            # a version number will be added until a new file
+                            # can be created
                             if "packet" not in item.split("_")[3]:
                                 version = item.split("_")[3]
         full_file_name = str(year) + "_" + str(month) + "_" + str(day) + "_" + version
