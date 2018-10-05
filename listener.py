@@ -12,6 +12,7 @@ from shared_headers import *
 from report import *
 import psutil
 
+   
 # Function that builds the file name to be used for packet information storage
 def buildFileName():
     file_choice = ''
@@ -102,7 +103,7 @@ def writeToLog(data, logfile):
     file_log.close()
     
 def socket_choice(listLength):
-    #ask for user input and check if it's an integer
+    """ask for user input on which socket they want to listen on and check if it's an integer"""
     print("{:_^20}").format("")
     user_input = raw_input("Which socket would you like to listen on?\n")
     try:
@@ -115,6 +116,8 @@ def socket_choice(listLength):
     return user_input
 
 def listening():
+    """starts listening on ports and displays data to terminal as well as logging
+    it in a file"""
     print("------------------")
     print("Interfaces")
     print("------------------")
