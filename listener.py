@@ -59,11 +59,17 @@ def buildFileName():
         day = 0
         version = 0
         list_of_files = os.listdir(os.getcwd())
+        # This loop will go through all files within the current directory
         for item in list_of_files:
             parts = item.split(".")
+            # Only files that end with *.log will be looked at
             if parts[len(parts) - 1] == 'log':
+                # If the file starts with a year and is greater than the stored
+                # year, store the new year value
                 if int(item.split("_")[0]) > year:
                     year = int(item.split("_")[0])
+                # If the year value matchs the max value held, continue looking
+                # at the month and day
                 if int(item.split("_")[0]) == year:
                     if int(item.split("_")[1]) > month:
                         month = int(item.split("_")[1])
@@ -71,6 +77,11 @@ def buildFileName():
                         if int(item.split("_")[2]) > day:
                             day = int(item.split("_")[2])
                         if int(item.split("_")[2]) == day:
+                            # If the loop has gotten this far, a packet log file
+                            # exists as a most current build
+                            # Since the use wants to have a new log file
+                            # a version number will be added until a new file
+                            # can be created
                             if "packet" not in item.split("_")[3]:
                                 version = item.split("_")[3]
         full_file_name = str(year) + "_" + str(month) + "_" + str(day) + "_" + version
