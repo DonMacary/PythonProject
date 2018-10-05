@@ -5,6 +5,7 @@ import socket
 import binascii
 import os
 import datetime
+import collections
 
 #Function for int checking
 def check_int():
@@ -30,9 +31,10 @@ def eth_header(data):
         for i in range(0, len(destination_mac), 2)])
     source_mac = ":".join([source_mac[i:i + 2] 
         for i in range(0, len(source_mac), 2)])
-    data = {"Destination Mac": destination_mac,
-            "Source Mac": source_mac,
-            "Protocol": eth_protocol}
+    data = collections.OrderedDict()
+    data["Destination Mac"] = destination_mac
+    data["Source Mac"] = source_mac
+    data["Protocol"] = eth_protocol
     return data
 
 # ICMP Header
@@ -42,9 +44,9 @@ def icmp_header(data):
     icmp_type = icmph[0]
     code = icmph[1]
     checksum = icmph[2]
-    data = {'ICMP Type': icmp_type,
-            "Code": code,
-            "CheckSum": checksum}
+    data["ICMP Type"] = icmp_type
+    data["Code"] = code
+    data["Checksum"] = checksum
     return data
 
 # IP Header
@@ -61,16 +63,17 @@ def ip_header(data):
     ip_header_checksum = storeobj[7]
     ip_source_address = socket.inet_ntoa(storeobj[8])
     ip_destination_address = socket.inet_ntoa(storeobj[9])
-    data = {'Version': ip_version,
-            'Tos': ip_tos,
-            'Total Length': ip_total_length,
-            'Identfication': ip_identification,
-            'Fragment': ip_fragment_offset,
-            'TTL': ip_ttl,
-            'Protocol': ip_protocol,
-            'Header Checksum': ip_header_checksum,
-            'Source Address': ip_source_address,
-            'Destination Address': ip_destination_address}
+    data = collections.OrderedDict()
+    data["Version"] = ip_version
+    data["Tos"] = ip_tos
+    data["Total Length"] = ip_total_length
+    data["Identification"] = ip_identification
+    data["Fragment"] = ip_fragment_offset
+    data["TTL"] = ip_ttl
+    data["Protocol"] = ip_protocol
+    data["Header Checksum"] = ip_header_checksum
+    data["Source Address"] = ip_source_address
+    data["Destination Address"] = ip_destination_address
     return data
 
 # TCP Header
@@ -86,15 +89,16 @@ def tcp_header(data):
     tcp_window = storeobj[6]
     tcp_checksum = storeobj[7]
     tcp_urgent_pointer = storeobj[8]
-    data = {"Source Port": tcp_source_port,
-            "Destination Port": tcp_destination_port,
-            "Sequence Number": tcp_sequence_number,
-            "Acknowledge Number": tcp_acknowledge_number,
-            "Offset & Reserved": tcp_offset_reserved,
-            "Tcp Flag": tcp_flag,
-            "Window": tcp_window,
-            "CheckSum": tcp_checksum,
-            "Urgent Pointer": tcp_urgent_pointer}
+    data = collections.OrderedDict()
+    data["Source Port"] = tcp_source_port
+    data["Destination Port"] = tcp_destination_port
+    data["Sequence Number"] = tcp_sequence_number
+    data["Acknowledge Number"] = tcp_acknowledge_number
+    data["Offset & Reserved"] = tcp_offset_reserved
+    data["Tcp Flag"] = tcp_flag
+    data["Window"] = tcp_window
+    data["CheckSum"] = tcp_checksum
+    data["Urgent Pointer"] = tcp_urgent_pointer
     return data
 
 # UDP Header
@@ -105,10 +109,11 @@ def udp_header(data):
     udp_dest_port = storeobj[1]
     udp_length = storeobj[2]
     udp_checksum = storeobj[3]
-    data = {"Source Port": udp_source_port,
-            "Destination Port": udp_dest_port,
-            "Length": udp_length,
-            "CheckSum": udp_checksum}
+    data = collections.OrderedDict()
+    data["Source Port"] = udp_source_port
+    data["Destination Port"] = udp_dest_port
+    data["Length"] = udp_length
+    data["CheckSum"] = udp_checksum
     return data
 
 
