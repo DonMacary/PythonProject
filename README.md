@@ -5,7 +5,7 @@ Authors:
     2dLt Ricky Smith - Developer
     SSgt Robert Graham - Developer
     SSgt Will Kraiser - Developer
-    SSgt Zack Verring - Developer
+    SSgt Zack Vering - Developer
 
 ## Project Description:
 * In a group, create a python program.
