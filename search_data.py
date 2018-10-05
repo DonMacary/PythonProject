@@ -6,7 +6,7 @@
     and a packet list from a file
 """
 from datetime import datetime
-from ipprotoconvert import *
+from shared_headers import *
 import collections
 
 """

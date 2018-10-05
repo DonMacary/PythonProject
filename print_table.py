@@ -1,5 +1,5 @@
 #This file will contain the functionality to print a table from a file
-from ipprotoconvert import *
+from shared_headers import *
 
 def displayTable():
     """This function lets the user open a packet log and display the data from that log on the terminal"""
