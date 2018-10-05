@@ -3,7 +3,7 @@ Authors:
 
     1Lt Donald Macary - Project Manager
     2dLt Ricky Smith - Developer
-    SSgt Robert Grahm - Developer
+    SSgt Robert Graham - Developer
     SSgt Will Kraiser - Developer
     SSgt Zack Verring - Developer
 
