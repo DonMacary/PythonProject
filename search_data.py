@@ -9,7 +9,9 @@ from datetime import datetime
 from ipprotoconvert import *
 import collections
 
-# Menu for search fields to be selected
+"""
+    Menu for search fields to be selected
+"""
 def printMenu():
     print("What would field would you like to search on?")
     print("(1). Packet Number")
@@ -19,14 +21,18 @@ def printMenu():
     print("(5). Protocol")
     print("(6). Packet Length")
 
-# Menu for the different types of conditions to be selected
+"""
+    Menu for the different types of conditions to be selected
+"""
 def printConditions():
     print("Which condition does the element need to have?")
     print("(1). Match (==)")
     print("(2). Like ('contains')")
     print("(3). Not (!=)")
 
-# Ask for the user input and validates that the input is correct
+"""
+    Ask for the user input and validates that the input is correct
+"""
 def user_validation(choices):
     user_input = raw_input("::: ")
     try:
@@ -39,7 +45,9 @@ def user_validation(choices):
         user_input = user_validation(choices)
     return user_input
 
-# Asks the user for the search parameters to be used on a provided packet list
+""" 
+    Asks the user for the search parameters to be used on a provided packet list
+"""
 def build_search_statement():
     search_operations = []
     next_op = ""
@@ -49,19 +57,25 @@ def build_search_statement():
         if next_op == "AND" or next_op == "OR":
             search_element.append(next_op)
         printMenu()
-        field_choice = user_validation(6)
-        search_element.insert(0, field_choice)
-        field_value = raw_input("Value to be searched::: ")
-        search_element.insert(1, field_value)
-        printConditions()
-        operations_choice = user_validation(3)
+        try:
+            field_choice = user_validation(6)
+            search_element.insert(0, field_choice)
+            field_value = raw_input("Value to be searched::: ")
+            search_element.insert(1, field_value)
+            printConditions()
+            operations_choice = user_validation(3)
+        except KeyboardInterrupt:
+            break
         search_element.insert(2, operations_choice)
         search_operations.append(search_element)
         user_input = ""
         # Prompts user if any further conditions will be added
         while True:
-            user_input = raw_input(
-                    "Would you to add another search element(Y or N)?")
+            try:
+                user_input = raw_input(
+                        "Would you to add another search element(Y or N)?")
+            except:
+                break
             if user_input.upper() == 'Y' or user_input.upper() == 'N':
                 break
             else:
@@ -72,8 +86,11 @@ def build_search_statement():
             # If another condition will be added, then it will be either
             # ANDed or ORed with the previous element
             while True:
-                print("Will the next element be AND or OR to this element?")
-                user_input = raw_input("::: ")
+                try:
+                    print("Will the next element be AND or OR to this element?")
+                    user_input = raw_input("::: ")
+                except KeyboardInterrupt:
+                    break
                 if user_input.upper() == "AND" or user_input.upper() == "OR":
                     next_op = user_input.upper()
                     break
@@ -81,7 +98,9 @@ def build_search_statement():
                     print("Input was not a valid choice.  Please choose again.")
     return search_operations
 
-# The search operation is performed on the provided list
+"""
+    The search operation is performed on the provided list
+"""
 def search_list(parsed_packet_db):
     filter_list = []
     field = 0
@@ -145,7 +164,9 @@ def search_list(parsed_packet_db):
         matches = False
     return filter_list
 
-# This function will search a provided file name and return a filtered list
+"""
+    This function will search a provided file name and return a filtered list
+"""
 def search_file(filename):
     parsed_packet_db = []
     line_num = 1
@@ -155,7 +176,8 @@ def search_file(filename):
             packet = collections.OrderedDict() 
             line_split = line.split(" ")
             packet["No."] = line_num
-            packet["Time"] = datetime.strptime(line_split[1][0:8], "%H:%M:%S").strftime("%H:%M:%S")
+            packet["Time"] = datetime.strptime(line_split[1][0:8], 
+                    "%H:%M:%S").strftime("%H:%M:%S")
             packet["Source Address"] = line_split[13]
             packet["Destination Address"] = line_split[14]
             packet["Protocol"] = line_split[11]
@@ -167,34 +189,7 @@ def search_file(filename):
                 packet["Header Checksum"] += " -> "
                 packet["Header Checksum"] += line_split[16]
                 flags = int(line_split[20])
-                if flags >= 256:
-                    packet["Header Checksum"] += "[NS]"
-                    flags -= 256
-                if flags >= 128:
-                    packet["Header Checksum"] += "[CWR]"
-                    flags -= 128
-                if flags >= 64:
-                    packet["Header Checksum"] += "[ECE]"
-                    flags -= 64
-                if flags >= 32:
-                    packet["Header Checksum"] += "[URG]"
-                    flags -= 32
-                if flags >= 16:
-                    packet["Header Checksum"] += "[ACK]"
-                    flags -= 16
-                if flags >= 8:
-                    packet["Header Checksum"] += "[PSH]"
-                    flags -= 8
-                if flags >= 4:
-                    packet["Header Checksum"] += "[RST]"
-                    flags -= 4
-                if flags >= 2:
-                    packet["Header Checksum"] += "[SYN]"
-                    flags -= 2
-                if flags >= 1:
-                    packet["Header Checksum"] += "[FIN]"
-                print(packet["Header Checksum"])
-
+                packet["Header Checksum"] = tcpFlags(flags)
             if int(packet["Protocol"]) == 17:
                 packet["Header Checksum"] = line_split[15]
                 packet["Header Checksum"] += " -> "
@@ -214,21 +209,30 @@ def search_file(filename):
     # Here, the search operations are called on the built packet list
     output = search_list(parsed_packet_db)
     return output
-
+"""
+    The hook function from main that prompts the user if they are searching
+    from the provided packet list or from a file
+"""
 def search_packets(parsed_packet_db):
     print("Would you like to search on packets in memory(1)"),
     print("or search on packets in a file(2)?")
-    user_choice = user_validation(2)
+    try:
+        user_choice = user_validation(2)
+    except KeyboardInterrupt:
+        return
     filtered_list = []
     if user_choice == 1:
-        if filtered_list:
+        if parsed_packet_db:
             filtered_list = search_list(parsed_packet_db)
         else:
             print("No packets in memory. Please use listening function first.")
     else:
         while True:
-            print("What file would you pull packet from?")
-            file_name = raw_input(":::")
+            try:
+                print("What file would you pull packet from?")
+                file_name = raw_input(":::")
+            except KeyboardInterrupt:
+                break
             try:
                 file_test = open(file_name, 'rb')
                 file_test.close()
@@ -236,7 +240,10 @@ def search_packets(parsed_packet_db):
                 print("Could not read from file name provided.")
                 print("Would you like to try again?(Y or N)")
                 while True:
-                    user_choice = raw_input(":::")
+                    try:
+                        user_choice = raw_input(":::")
+                    except KeyboardInterrupt:
+                        break
                     if user_choice.upper() != 'Y' and user_choice.upper() != 'N':
                         print("Not a valid input. Please input again.")
                     else:
@@ -247,12 +254,13 @@ def search_packets(parsed_packet_db):
                     continue
             filtered_list = search_file(file_name)
             break
-    print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(" No.", 
-            "Time", "Source IP", "Destination IP", "Protocol",
-            "Length", "Information")
-    for packet in filtered_list:
-        print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(
-                packet["No."], packet["Time"], packet["Source Address"], 
-                packet["Destination Address"], protoName(int(packet["Protocol"])), 
-                packet["Total Length"], packet["Header Checksum"])
-    print("")
+    if parsed_packet_db:
+        print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(" No.", 
+                "Time", "Source IP", "Destination IP", "Protocol",
+                "Length", "Information")
+        for packet in filtered_list:
+            print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(
+                    packet["No."], packet["Time"], packet["Source Address"], 
+                    packet["Destination Address"], protoName(int(packet["Protocol"])), 
+                    packet["Total Length"], packet["Header Checksum"])
+        print("")
