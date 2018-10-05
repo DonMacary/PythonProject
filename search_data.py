@@ -160,7 +160,45 @@ def search_file(filename):
             packet["Destination Address"] = line_split[14]
             packet["Protocol"] = line_split[11]
             packet["Total Length"] = line_split[7]
-            packet["Header Checksum"] = line_split[12]
+            if int(packet["Protocol"]) == 1:
+                packet["Header Checksum"] = line_split[17]
+            if int(packet["Protocol"]) == 6:
+                packet["Header Checksum"] = line_split[15]
+                packet["Header Checksum"] += " -> "
+                packet["Header Checksum"] += line_split[16]
+                flags = int(line_split[20])
+                if flags >= 256:
+                    packet["Header Checksum"] += "[NS]"
+                    flags -= 256
+                if flags >= 128:
+                    packet["Header Checksum"] += "[CWR]"
+                    flags -= 128
+                if flags >= 64:
+                    packet["Header Checksum"] += "[ECE]"
+                    flags -= 64
+                if flags >= 32:
+                    packet["Header Checksum"] += "[URG]"
+                    flags -= 32
+                if flags >= 16:
+                    packet["Header Checksum"] += "[ACK]"
+                    flags -= 16
+                if flags >= 8:
+                    packet["Header Checksum"] += "[PSH]"
+                    flags -= 8
+                if flags >= 4:
+                    packet["Header Checksum"] += "[RST]"
+                    flags -= 4
+                if flags >= 2:
+                    packet["Header Checksum"] += "[SYN]"
+                    flags -= 2
+                if flags >= 1:
+                    packet["Header Checksum"] += "[FIN]"
+                print(packet["Header Checksum"])
+
+            if int(packet["Protocol"]) == 17:
+                packet["Header Checksum"] = line_split[15]
+                packet["Header Checksum"] += " -> "
+                packet["Header Checksum"] += line_split[16]
             parsed_packet_db.append(packet)
             line_num += 1
     # Here, the available packets from the file are printed
@@ -176,3 +214,45 @@ def search_file(filename):
     # Here, the search operations are called on the built packet list
     output = search_list(parsed_packet_db)
     return output
+
+def search_packets(parsed_packet_db):
+    print("Would you like to search on packets in memory(1)"),
+    print("or search on packets in a file(2)?")
+    user_choice = user_validation(2)
+    filtered_list = []
+    if user_choice == 1:
+        if filtered_list:
+            filtered_list = search_list(parsed_packet_db)
+        else:
+            print("No packets in memory. Please use listening function first.")
+    else:
+        while True:
+            print("What file would you pull packet from?")
+            file_name = raw_input(":::")
+            try:
+                file_test = open(file_name, 'rb')
+                file_test.close()
+            except IOError:
+                print("Could not read from file name provided.")
+                print("Would you like to try again?(Y or N)")
+                while True:
+                    user_choice = raw_input(":::")
+                    if user_choice.upper() != 'Y' and user_choice.upper() != 'N':
+                        print("Not a valid input. Please input again.")
+                    else:
+                        break
+                if user_choice.upper() == 'N':
+                    break
+                if user_choice.upper() == 'Y':
+                    continue
+            filtered_list = search_file(file_name)
+            break
+    print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(" No.", 
+            "Time", "Source IP", "Destination IP", "Protocol",
+            "Length", "Information")
+    for packet in filtered_list:
+        print(" {:4} | {:8} | {:16} | {:16} | {:8} | {:6} | {:8} ").format(
+                packet["No."], packet["Time"], packet["Source Address"], 
+                packet["Destination Address"], protoName(int(packet["Protocol"])), 
+                packet["Total Length"], packet["Header Checksum"])
+    print("")

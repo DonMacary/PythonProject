@@ -118,31 +118,39 @@ def socket_choice(listLength):
 def listening():
     """starts listening on ports and displays data to terminal as well as logging
     it in a file"""
+    print("------------------")
+    print("Interfaces")
+    print("------------------")
     #get network address types
     netList = psutil.net_if_addrs()
     #create a list object to assign the network address types to
-    keyList = []
+    keyList = ["any"]
     #loop through and print out the list of network address types
     #append the address types to the list
     for i in range(len(netList)):
-        print("{}: {}").format(i+1, netList.keys()[i])
         keyList.append(netList.keys()[i])
+
+    for i in range(len(keyList)):
+        print "{}: {}".format(i+1,keyList[i])
     
     #let user choose which network address type
     userChoice = socket_choice(len(netList))
-    keyChoice = keyList[userChoice-1]
-    socketBind = keyChoice
+    if userChoice == 1:
+        s = socket.socket(socket.PF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0800))
+    else:
+        keyChoice = keyList[userChoice-1]
+        socketBind = keyChoice
 
-    #create an INET, raw socket
-    s = socket.socket(socket.PF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0800))
-    #bind to the user's selected type
-    s.bind((socketBind, 0x0800))
+        #create an INET, raw socket
+        s = socket.socket(socket.PF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0800))
+        #bind to the user's selected type
+        s.bind((socketBind, 0x0800))
 
     logfile = buildFileName()
     # receive a packet
     raw_packet_db = []
     parsed_packet_db = []
-    line_num = 0
+    line_num = 1
     while True:
         try:
             # print output on terminal            
@@ -153,4 +161,4 @@ def listening():
             line_num += 1
         except KeyboardInterrupt:
             break
-    return raw_packet_db
+    return raw_packet_db, parsed_packet_db
