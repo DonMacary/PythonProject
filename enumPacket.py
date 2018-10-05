@@ -8,7 +8,6 @@ def packetCombo():
     print "Separate packet number by comma (1,2) and range by dashes (4-6)"
     user_input = raw_input("Enter packet number and/or packet number range: ").rstrip()
     try:
-        packRange = [] 
         packRange = user_input.split(",")
         j = []
         for i in range(len(packRange)):
@@ -88,7 +87,6 @@ def check_int():
 def packetChoice(data):
     #data is now a list of packets   
     runMenu = True
-    raw_packet = data
 
     while runMenu == True:
         print "\nEnumeration Station"
@@ -101,12 +99,12 @@ def packetChoice(data):
             pkCombo = packetCombo()
             if pkCombo < 1:
                 print "\nPacket Selection out-of-range"
-                packetChoice(raw_packet)
+                packetChoice(data)
                 break
-            else:
-                for i in pkCombo:
+            else:                
+                for i in pkCombo:                    
                     print "\nPacket {}".format(i)
-                    enumeratePacket(raw_packet[i])
+                    enumeratePacket(data[i -1])
                     time.sleep(1)
         elif (userInput == 2):
             break
