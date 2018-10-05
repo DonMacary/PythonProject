@@ -16,14 +16,23 @@ import psutil
 def buildFileName():
     file_choice = ''
     while True:
-        # User is prompted to either use a prior file or a new logfile
-        print("Would you like to write to a new log file(N)"),
-        user_input = raw_input("or the last one(L)?:::")
-        if user_input.upper() != 'N' and user_input.upper() != 'L':
-            print("User input is not valid.  Please choose again.")
-        else:
-            file_choice = user_input
+        log_file = False
+        for item in os.listdir(os.getcwd()):
+            if ".log" in item:
+                log_file = True
+        if log_file is False:
+            print("No previous log file detected.  Creating new logfile")
+            file_choice = 'N'
             break
+        else:
+            # User is prompted to either use a prior file or a new logfile
+            print("Would you like to write to a new log file(N)"),
+            user_input = raw_input("or the last one(L)?:::")
+            if user_input.upper() != 'N' and user_input.upper() != 'L':
+                print("User input is not valid.  Please choose again.")
+            else:
+                file_choice = user_input
+                break
     full_file_name = ""
     packet_version = 1
     # If a new file is used, the file name will be based on the date
